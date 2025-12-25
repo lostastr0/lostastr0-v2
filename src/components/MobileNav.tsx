@@ -11,9 +11,9 @@ export default function MobileNav({
 }) {
   return (
     <div className="xl:hidden">
-      {/* TOPBAR WRAP (this is the missing “bar”) */}
-      <div className="fixed left-0 right-0 top-0 z-40">
-        <div className="px-4 pt-4">
+      {/* TOPBAR */}
+      <div className="fixed left-0 right-0 top-0 z-50 pointer-events-none">
+        <div className="px-4 pt-4 pointer-events-auto">
           <div className="rounded-2xl border border-white/10 bg-black/30 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.45)]">
             <div className="flex items-center justify-between px-3 py-2">
               {/* Avatar */}
@@ -47,7 +47,6 @@ export default function MobileNav({
               </div>
             </div>
 
-            {/* tiny bottom fade like Carl */}
             <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
           </div>
         </div>

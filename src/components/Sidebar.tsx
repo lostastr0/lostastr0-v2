@@ -43,7 +43,7 @@ export default function Sidebar({ variant = "fixed", onClose }: Props) {
             </div>
           </div>
           <div className="ml-auto flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-emerald-400/80" />
+            <div className="h-2 w-2 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_14px_rgb(var(--accent)_/_0.55)]" />
             {variant === "drawer" && (
               <button
                 onClick={onClose}
@@ -102,10 +102,10 @@ export default function Sidebar({ variant = "fixed", onClose }: Props) {
             whileTap={{ scale: 0.98 }}
             href="#contact"
             onClick={variant === "drawer" ? onClose : undefined}
-            className="mt-6 flex items-center justify-between rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-zinc-100 hover:bg-white/15 transition"
+            className="mt-6 flex items-center justify-between rounded-2xl border border-white/10 bg-[rgb(var(--accent)_/_0.16)] px-4 py-3 text-sm text-white hover:bg-[rgb(var(--accent)_/_0.24)] transition"
           >
             <span>Get in touch</span>
-            <span className="text-xs text-zinc-300">⚡</span>
+            <span className="text-xs text-white/80">⚡</span>
           </motion.a>
 
           <div className="mt-3 flex items-center justify-between text-xs text-zinc-500">

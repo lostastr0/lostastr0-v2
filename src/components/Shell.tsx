@@ -1,27 +1,38 @@
+// src/components/Shell.tsx
 "use client";
 
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import MobileNav from "@/components/MobileNav";
+import CursorDot from "@/components/CursorDot";
 
 export default function Shell({ children }: { children: React.ReactNode }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-black text-zinc-100 overflow-x-hidden">
-      {/* Desktop sidebar */}
-      <div className="hidden xl:block fixed left-6 top-6 bottom-6 w-[280px]">
+    <div className="min-h-dvh bg-black text-white overflow-x-hidden">
+      <CursorDot />
+
+      {/* Desktop sidebar only on XL+ */}
+      <aside className="hidden xl:block fixed left-6 top-6 bottom-6 w-[260px] z-40">
         <Sidebar />
-      </div>
+      </aside>
 
-      {/* Mobile / half-screen nav */}
-      <MobileNav open={menuOpen} setOpen={setMenuOpen} />
+      {/* Mobile/Half-screen nav (< xl) */}
+      <MobileNav open={open} setOpen={setOpen} />
 
-      {/* Content wrapper */}
-      <main className="relative min-h-screen pt-28 pb-20 xl:pt-10 xl:pl-[340px] overflow-x-clip">
-        {/* WIDTH CONSTRAINT */}
-        <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
-          {children}
+      {/* Main */}
+      <main className="min-h-dvh px-4 sm:px-6">
+        {/* 
+          Changes:
+          - Keep content centered on <xl (mobile + half screen)
+          - On xl+, shift content right for sidebar using padding on MAIN, not on inner container
+          - Use a wider max width for the "Carl" feel, but clamp so it never gets silly wide
+        */}
+        <div className="mx-auto w-full pt-[96px] xl:pt-0 xl:pl-[320px]">
+          <div className="mx-auto w-full max-w-[1200px]">
+            {children}
+          </div>
         </div>
       </main>
     </div>
