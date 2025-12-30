@@ -1,7 +1,7 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useActiveSection } from "@/hooks/useActiveSection";
 import {
   HiOutlineHome,
   HiOutlineFolder,
@@ -18,34 +18,23 @@ import {
 type NavItem = {
   label: string;
   href: string;
-  id?: "top" | "projects" | "about" | "contact" | "writeups" | "stack";
   icon: React.ReactNode;
 };
 
 const MAIN_NAV: NavItem[] = [
-  { label: "Home", href: "#top", id: "top", icon: <HiOutlineHome /> },
-  { label: "Works", href: "#projects", id: "projects", icon: <HiOutlineFolder /> },
-  { label: "About", href: "#about", id: "about", icon: <HiOutlineUser /> },
-  { label: "Contact", href: "#contact", id: "contact", icon: <HiOutlineMail /> },
+  { label: "Home", href: "/", icon: <HiOutlineHome /> },
+  { label: "Projects", href: "/projects", icon: <HiOutlineFolder /> },
+  { label: "About", href: "/#about", icon: <HiOutlineUser /> },
+  { label: "Contact", href: "/#contact", icon: <HiOutlineMail /> },
 ];
 
 const RESOURCES_NAV: NavItem[] = [
-  { label: "Notes", href: "#writeups", id: "writeups", icon: <HiOutlineDocumentText /> },
-  { label: "Journey", href: "#stack", id: "stack", icon: <HiOutlineCube /> },
+  { label: "Notes", href: "/#notes", icon: <HiOutlineDocumentText /> },
+  { label: "Journey", href: "/#about", icon: <HiOutlineCube /> },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const activeSection = useActiveSection([
-    "top",
-    "projects",
-    "about",
-    "contact",
-    "writeups",
-    "stack",
-  ]);
-
-  const isHome = pathname === "/";
 
   return (
     <aside
@@ -62,10 +51,8 @@ export default function Sidebar() {
       <div className="px-6 pt-6">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-full bg-gradient-to-br from-sky-400 to-blue-600" />
-          <div className="min-w-0">
-            <div className="truncate text-sm font-semibold text-white">
-              Jaineel
-            </div>
+          <div>
+            <div className="text-sm font-semibold text-white">Jaineel</div>
             <div className="flex items-center gap-2 text-xs text-zinc-400">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
               Open for opportunities
@@ -74,29 +61,31 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* MAIN NAV */}
+      {/* NAV */}
       <nav className="mt-6 px-4 space-y-1">
         {MAIN_NAV.map((item) => {
-          const active = isHome && item.id === activeSection;
+          const active =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(item.href);
 
           return (
-            <a
+            <Link
               key={item.label}
               href={item.href}
-              className={[
-                "flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm transition",
-                active
-                  ? "bg-white/10 text-white"
-                  : "text-zinc-300 hover:bg-white/5 hover:text-white",
-              ].join(" ")}
+              className={`
+                flex items-center gap-3 rounded-xl px-4 py-2.5
+                text-sm transition
+                ${
+                  active
+                    ? "bg-white/10 text-white"
+                    : "text-zinc-300 hover:bg-white/5 hover:text-white"
+                }
+              `}
             >
               <span className="text-lg">{item.icon}</span>
-              <span className="truncate">{item.label}</span>
-
-              {active && (
-                <span className="ml-auto h-1.5 w-1.5 rounded-full bg-sky-400 shadow-[0_0_18px_rgba(56,189,248,0.6)]" />
-              )}
-            </a>
+              {item.label}
+            </Link>
           );
         })}
       </nav>
@@ -107,37 +96,27 @@ export default function Sidebar() {
       </div>
 
       <nav className="mt-2 px-4 space-y-1">
-        {RESOURCES_NAV.map((item) => {
-          const active = isHome && item.id === activeSection;
-
-          return (
-            <a
-              key={item.label}
-              href={item.href}
-              className={[
-                "flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm transition",
-                active
-                  ? "bg-white/10 text-white"
-                  : "text-zinc-300 hover:bg-white/5 hover:text-white",
-              ].join(" ")}
-            >
-              <span className="text-lg">{item.icon}</span>
-              <span className="truncate">{item.label}</span>
-
-              {active && (
-                <span className="ml-auto h-1.5 w-1.5 rounded-full bg-sky-400 shadow-[0_0_18px_rgba(56,189,248,0.6)]" />
-              )}
-            </a>
-          );
-        })}
+        {RESOURCES_NAV.map((item) => (
+          <Link
+            key={item.label}
+            href={item.href}
+            className="
+              flex items-center gap-3 rounded-xl px-4 py-2.5
+              text-sm text-zinc-300
+              hover:bg-white/5 hover:text-white transition
+            "
+          >
+            <span className="text-lg">{item.icon}</span>
+            {item.label}
+          </Link>
+        ))}
       </nav>
 
       <div className="flex-1" />
 
       {/* CTA */}
       <div className="px-6 pb-4">
-        <a
-          href="#contact"
+        <button
           className="
             w-full rounded-xl
             bg-gradient-to-r from-sky-500 to-blue-600
@@ -147,19 +126,19 @@ export default function Sidebar() {
           "
         >
           <HiOutlineLightningBolt />
-          Get in touch
-        </a>
+          Get Pro Access
+        </button>
       </div>
 
-      {/* FOOTER */}
+      {/* FOOTER ICONS */}
       <div className="flex items-center justify-between px-6 pb-5 text-zinc-400">
-        <button className="hover:text-white transition">
+        <button className="hover:text-white transition" aria-label="Theme">
           <HiOutlineMoon />
         </button>
-        <button className="hover:text-white transition">
+        <button className="hover:text-white transition" aria-label="Search">
           <HiOutlineSearch />
         </button>
-        <button className="hover:text-white transition">
+        <button className="hover:text-white transition" aria-label="Login">
           <HiOutlineLogin />
         </button>
       </div>
